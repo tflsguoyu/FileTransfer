@@ -1,0 +1,17 @@
+{
+  "name": "FileTransfer",
+  "short_name": "Transfer",
+  "description": "同一路由器下的浏览器点对点文件传输工具",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f9fc",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
