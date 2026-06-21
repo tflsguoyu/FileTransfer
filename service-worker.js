@@ -1,4 +1,4 @@
-const CACHE_NAME = "filetransfer-v1";
+const CACHE_NAME = "xiaopi-drop-v2";
 const ASSETS = [
   "./",
   "./index.html",

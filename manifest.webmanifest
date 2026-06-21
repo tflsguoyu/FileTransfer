@@ -1,6 +1,6 @@
 {
-  "name": "FileTransfer",
-  "short_name": "Transfer",
+  "name": "小π Drop",
+  "short_name": "小π Drop",
   "description": "同一路由器下的浏览器点对点文件传输工具",
   "start_url": "./",
   "display": "standalone",

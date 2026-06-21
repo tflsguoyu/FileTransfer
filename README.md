@@ -1,4 +1,4 @@
-# FileTransfer
+# 小π Drop
 
 一个面向手机和电脑的局域网文件传输 PWA。前端可部署到 GitHub Pages，Cloudflare Worker 只负责短码信令，文件通过 WebRTC DataChannel 在浏览器之间传输。
 

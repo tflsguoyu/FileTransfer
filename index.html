@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0f172a" />
-    <title>FileTransfer</title>
+    <title>小π Drop</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
@@ -13,15 +13,15 @@
     <main class="shell">
       <section class="topbar">
         <div>
-          <p class="eyebrow">局域网直传</p>
-          <h1>FileTransfer</h1>
+          <p class="eyebrow">同路由器 · 浏览器直连</p>
+          <h1>小π Drop</h1>
         </div>
         <button class="icon-button" id="installButton" type="button" hidden aria-label="安装">
           <span>安装</span>
         </button>
       </section>
 
-      <section class="status-panel" id="statusPanel">
+      <section class="status-panel" id="statusPanel" aria-live="polite">
         <div>
           <p class="label">连接状态</p>
           <p class="status" id="statusText">等待开始</p>
@@ -29,34 +29,54 @@
         <div class="pill" id="routePill">未连接</div>
       </section>
 
-      <section class="tabs" role="tablist" aria-label="传输模式">
-        <button class="tab active" id="sendTab" type="button" role="tab" aria-selected="true">发送</button>
-        <button class="tab" id="receiveTab" type="button" role="tab" aria-selected="false">接收</button>
+      <section class="mode-grid" role="tablist" aria-label="传输模式">
+        <button class="mode-card active" id="sendTab" type="button" role="tab" aria-selected="true">
+          <span class="mode-icon">↑</span>
+          <span>
+            <strong>发送文件</strong>
+            <small>选择后生成短码</small>
+          </span>
+        </button>
+        <button class="mode-card" id="receiveTab" type="button" role="tab" aria-selected="false">
+          <span class="mode-icon">↓</span>
+          <span>
+            <strong>接收文件</strong>
+            <small>输入对方短码</small>
+          </span>
+        </button>
       </section>
 
       <section class="panel active" id="sendPanel">
         <div class="dropzone" id="dropzone">
           <input id="fileInput" type="file" multiple />
           <div>
-            <p class="drop-title">选择或拖入文件</p>
-            <p class="drop-copy">文件会在连接建立后直接传给对方浏览器</p>
+            <p class="drop-title">点这里选择文件</p>
+            <p class="drop-copy">也可以拖入多个文件</p>
           </div>
         </div>
 
         <div class="file-list" id="fileList"></div>
 
-        <button class="primary" id="createRoomButton" type="button" disabled>生成短码</button>
+        <button class="primary" id="createRoomButton" type="button" disabled>生成发送码</button>
 
         <div class="code-box" id="sendCodeBox" hidden>
-          <p class="label">让接收端输入</p>
+          <p class="label">让另一台设备输入</p>
           <p class="code" id="roomCode">------</p>
         </div>
       </section>
 
       <section class="panel" id="receivePanel">
-        <label class="field">
-          <span>输入 6 位短码</span>
-          <input id="joinCodeInput" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="例如 482913" />
+        <label class="field code-field">
+          <span>输入发送码</span>
+          <input id="joinCodeInput" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="输入 6 位发送码" />
+          <div class="code-digits" id="codeDigits" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </label>
         <button class="primary" id="joinRoomButton" type="button">加入接收</button>
 
@@ -66,7 +86,7 @@
       <section class="transfer" id="transferPanel" hidden>
         <div class="transfer-header">
           <div>
-            <p class="label">传输进度</p>
+            <p class="label">正在传输</p>
             <p class="transfer-name" id="transferName">等待文件</p>
           </div>
           <p class="metric" id="speedText">0 MB/s</p>

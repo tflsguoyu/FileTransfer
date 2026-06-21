@@ -28,6 +28,7 @@ const els = {
   sendCodeBox: document.querySelector("#sendCodeBox"),
   roomCode: document.querySelector("#roomCode"),
   joinCodeInput: document.querySelector("#joinCodeInput"),
+  codeDigits: document.querySelector("#codeDigits"),
   joinRoomButton: document.querySelector("#joinRoomButton"),
   transferPanel: document.querySelector("#transferPanel"),
   transferName: document.querySelector("#transferName"),
@@ -53,6 +54,8 @@ function bindUi() {
   els.fileInput.addEventListener("change", () => setFiles([...els.fileInput.files]));
   els.createRoomButton.addEventListener("click", createRoom);
   els.joinRoomButton.addEventListener("click", joinRoom);
+  els.joinCodeInput.addEventListener("input", handleCodeInput);
+  els.codeDigits.addEventListener("click", () => els.joinCodeInput.focus());
   els.saveSettingsButton.addEventListener("click", saveSettings);
 
   ["dragenter", "dragover"].forEach((eventName) => {
@@ -118,6 +121,22 @@ function saveSettings() {
   const value = els.signalingUrlInput.value.trim().replace(/\/$/, "");
   localStorage.setItem(SIGNALING_KEY, value);
   setStatus("信令地址已保存", "未连接");
+}
+
+function handleCodeInput() {
+  const normalized = els.joinCodeInput.value.replace(/\D/g, "").slice(0, 6);
+  els.joinCodeInput.value = normalized;
+  renderCodeDigits(normalized);
+  if (normalized.length === 6 && (!peer || peer.connectionState === "closed")) {
+    joinRoom();
+  }
+}
+
+function renderCodeDigits(value) {
+  [...els.codeDigits.children].forEach((digit, index) => {
+    digit.textContent = value[index] || "";
+    digit.classList.toggle("filled", Boolean(value[index]));
+  });
 }
 
 async function createRoom() {
@@ -195,7 +214,7 @@ async function handleSignal(event) {
 
   if (message.type === "room") {
     roomCode = message.code;
-    els.roomCode.textContent = roomCode;
+    els.roomCode.textContent = roomCode.split("").join(" ");
     els.sendCodeBox.hidden = false;
     setStatus("短码已生成，等待接收端", "配对中");
     return;
