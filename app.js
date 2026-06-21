@@ -1,5 +1,6 @@
 const CHUNK_SIZE = 64 * 1024;
 const SIGNALING_KEY = "filetransfer.signalingUrl";
+const DEFAULT_SIGNALING_URL = "https://filetransfer-signaling.tflsguoyu.workers.dev";
 
 let mode = "send";
 let selectedFiles = [];
@@ -41,7 +42,7 @@ const els = {
 init();
 
 function init() {
-  els.signalingUrlInput.value = localStorage.getItem(SIGNALING_KEY) || "";
+  els.signalingUrlInput.value = getSignalingUrl();
   bindUi();
   registerServiceWorker();
 }
@@ -364,7 +365,7 @@ function closeSession() {
 }
 
 function getSignalingUrl() {
-  return (localStorage.getItem(SIGNALING_KEY) || els.signalingUrlInput.value || "").trim().replace(/\/$/, "");
+  return (localStorage.getItem(SIGNALING_KEY) || els.signalingUrlInput.value || DEFAULT_SIGNALING_URL).trim().replace(/\/$/, "");
 }
 
 function setStatus(text, pill, pillClass = "") {
